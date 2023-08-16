@@ -1,5 +1,5 @@
-# Get cited refs from a publication, using OpnAlex data
+# Get cited refs from a publication, using OpenAlex data
 
 This repo supports the function "bibliographic coupling" available at https://nocodefunctions.com
 
-Licese: Creative Commons Attribution 4.0 International Public License
+License: Creative Commons Attribution 4.0 International Public License
