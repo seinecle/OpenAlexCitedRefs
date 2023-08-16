@@ -5,6 +5,7 @@ package net.clementlevallois.bibliocoupling.tests;
 
 import java.io.IOException;
 import net.clementlevallois.bibliocoupling.controller.BiblioCoupling;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -17,14 +18,30 @@ public class FetchRefsForOneWorkTest {
     
     @Test
     public void testFetchingRefs() throws IOException, InterruptedException{
-        String articleTitle = "Yahoo! for Amazon: Sentiment Extraction from Small Talk on the Web";
+        
+        boolean hasInternetAccess = java.net.InetAddress.getByName("www.google.com").isReachable(1000);
+        
+        if (!hasInternetAccess){
+            System.out.println("test skipped because there is no Internet access");
+            return;
+        }
+
+        
+        String articleTitle = "Hello Brand let's take a selfie";
         
         BiblioCoupling bib = new BiblioCoupling();
-        String refs = bib.getCommaSeparatedCitedRefsForOneWork(articleTitle);
-        
+        String refs = bib.getCommaSeparatedCitedRefsForOneWorkViaTitle(articleTitle);
+        if (refs.isBlank()){
+            articleTitle = articleTitle.replaceAll("'", "’");
+            refs = bib.getCommaSeparatedCitedRefsForOneWorkViaTitle(articleTitle);
+        }
         refs = refs.replaceAll(",",System.lineSeparator());
+        Assert.assertTrue(!refs.isBlank());
+
+        String doi = "https://doi-org.em-lyon.idm.oclc.org/10.1016/j.ecolecon.2010.06.020";
         
-        System.out.println("refs:");
-        System.out.println(refs);
+        refs = bib.getCommaSeparatedCitedRefsForOneWorkViaDOI(doi);
+        refs = refs.replaceAll(",",System.lineSeparator());
+        Assert.assertTrue(!refs.isBlank());
     }
 }
